@@ -8,7 +8,7 @@ const createProduct = async (req, res) => {
     try {
         const createdProduct = await productServices.createProduct(req.body);
 
-        res.status(201).json(createdProduct);
+        res.status(201).json({message: "Product created successfully"});
     } catch (error) {
         res.json({ message: error.message });
     }
