@@ -5,10 +5,7 @@ const productSchema = new mongoose.Schema({
     tag: {
         type: [String],
         enum: [
-            "VELVET",
             "ROYAL LUXURY",
-            "GLAM",
-            "SMOOTH",
             "SHINE"
         ],
         required: true,

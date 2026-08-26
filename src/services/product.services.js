@@ -3,11 +3,35 @@ import Product from "../models/Product.js";
 
 const getProducts = async (query) => {
 
-    return Product.find();
+    const filter = {};
+
+    if (query?.search) {
+        filter.title = { $regex: query.search, $options: "i" };
+        if (query?.brand) { filter.brand = query.brand; }
+        if (query?.category) { filter.category = query.category; }
+        if (query?.brand) { filter.brand = query.brand; }
+        if (query?.brand) { filter.brand = query.brand; }
+    }
+    let sort = {};
+
+    if (query.sort) {
+        if (query.sort === "asc") {
+            sort.title = 1;
+        } else if (query.sort === "desc") {
+            sort.title = -1;
+        } else {
+            throw {
+                statusCode: 400,
+                message: "Invalid sort value"
+            };
+        }
+    }
+
+    return Product.find(filter);
 }
 const createProduct = async (data) => {
     const product = await Product.create(data);
-    
+
     return product;
 };
 

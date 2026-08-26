@@ -22,6 +22,4 @@ router.put("/:id", productControllers.updateProduct);
 
 
 
-
-
 export default router;
