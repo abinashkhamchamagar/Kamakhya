@@ -1,8 +1,12 @@
 import productServices from "../services/product.services.js";
+import productQuerySchema from "../libs/productQuery.schema.js";
 
 const getProducts = async (req, res) => {
     try {
-        const products = await productServices.getProducts(req.query);
+
+        const query = productQuerySchema.parse(req.query);
+        const products = await productServices.getProducts(query);
+
         if (products.length === 0) {
             return res.status(200).json({
                 products: [],
@@ -11,12 +15,20 @@ const getProducts = async (req, res) => {
         }
         res.status(200).json(products)
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        if (error.name === "ZodError") {
+            return res.status(400).json({
+                message: "Invalid query parameters",
+            });
+        }
+
+        res.status(error.statusCode || 500).json({
+            message: error.message || "Internal server error"
+        });
     }
 }
 const createProduct = async (req, res) => {
     try {
-        const product = await productServices.createProduct(req.body);
+        const product = await productServices.createProduct(req.body, req.files);
 
         res.status(201).json({ message: "Product created successfully", product });
     } catch (error) {
@@ -44,7 +56,7 @@ const deleteProduct = async (req, res) => {
 }
 const updateProduct = async (req, res) => {
     try {
-        const product = await productServices.updateProduct(req.params.id, req.body)
+        const product = await productServices.updateProduct(req.params.id, req.body, req.files)
         res.status(200).json(product);
     }
     catch (error) {
