@@ -26,6 +26,7 @@ router.delete("/:id", productControllers.deleteProduct);
 router.put(
     "/:id",
     normalizeProductBody,
+    validator(productSchema),
     productControllers.updateProduct
 );
 

@@ -1,12 +1,10 @@
 import { v2 as cloudinary } from "cloudinary";
 
-// uploads multiple files in cloudinary and returns the result
 const uploadFiles = async (files) => {
   const uploadedFiles = [];
 
   for (const file of files) {
     const result = await new Promise((resolve, reject) => {
-      // upload file to cloudinary
       cloudinary.uploader
         .upload_stream(
           {

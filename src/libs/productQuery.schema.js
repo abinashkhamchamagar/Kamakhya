@@ -12,7 +12,12 @@ const productQuerySchema = z.object({
 
     type: z.enum(PRODUCT_TYPES).optional(),
 
-    sort: z.enum(["A-Z", "Z-A", "newest", "oldest"]).optional()
+    sort: z.enum(["A-Z", "Z-A", "newest", "oldest"]).optional(),
+
+    page: z.coerce.number().int().min(1).optional(),
+    
+    limit: z.coerce.number().int().min(1).optional()
+
 });
 
 export default productQuerySchema;

@@ -5,16 +5,21 @@ const getProducts = async (req, res) => {
     try {
 
         const query = productQuerySchema.parse(req.query);
-        const products = await productServices.getProducts(query);
 
-        if (products.length === 0) {
+        const result = await productServices.getProducts(query);
+
+        if (result.products.length === 0) {
             return res.status(200).json({
                 products: [],
+                pagination: result.pagination,
                 message: "No products found"
             });
         }
-        res.status(200).json(products)
+
+        res.status(200).json(result);
+
     } catch (error) {
+
         if (error.name === "ZodError") {
             return res.status(400).json({
                 message: "Invalid query parameters",
@@ -25,7 +30,7 @@ const getProducts = async (req, res) => {
             message: error.message || "Internal server error"
         });
     }
-}
+};
 const createProduct = async (req, res) => {
     try {
         const product = await productServices.createProduct(req.body, req.files);

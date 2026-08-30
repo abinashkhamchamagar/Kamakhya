@@ -38,8 +38,29 @@ const getProducts = async (query) => {
             sort.createdAt = 1;
         }
     }
+    const page = Number(query?.page) || 1;
+    const limit = Number(query?.limit) || 10;
 
-    return Product.find(filter).sort(sort);
+    const skip = (page - 1) * limit; const products = await Product.find(filter)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit);
+
+    // Total products matching the filter
+    const totalProducts = await Product.countDocuments(filter);
+
+    // Total number of pages
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    return {
+        products,
+        pagination: {
+            currentPage: page,
+            limit,
+            totalProducts,
+            totalPages
+        }
+    };
 };
 const createProduct = async (data, files) => {
     if (files && files.length > 0) {
