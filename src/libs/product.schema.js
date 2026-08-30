@@ -16,9 +16,9 @@ const productSchema = z.object({
 
     title: z.string().trim().min(1),
 
-    moq: z.string().min(1),
+    moq: z.coerce.number().min(1),
 
-    image: z.array(z.string()),
+    imageUrl: z.array(z.string()).optional(),
 
     lead: z.string().trim().min(1),
 

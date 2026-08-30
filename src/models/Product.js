@@ -50,7 +50,7 @@ const productSchema = new mongoose.Schema({
         required: true,
         min: 1
     },
-    image: [String],
+    imageUrl: [String],
     lead: {
         type: String,
         required: true,

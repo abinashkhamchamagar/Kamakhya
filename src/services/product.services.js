@@ -44,7 +44,7 @@ const getProducts = async (query) => {
 const createProduct = async (data, files) => {
     if (files && files.length > 0) {
         const uploadedFiles = await uploadFiles(files);
-        data.image = uploadedFiles.map(file => file.secure_url);
+        data.imageUrl = uploadedFiles.map(file => file.secure_url);
     }
 
     return await Product.create(data);
@@ -80,7 +80,7 @@ const updateProduct = async (id, data, files) => {
 
     if (files && files.length > 0) {
         const uploadedFiles = await uploadFiles(files);
-        data.image = uploadedFiles.map(file => file.secure_url);
+        data.imageUrl = uploadedFiles.map(file => file.secure_url);
     }
 
     return await Product.findByIdAndUpdate(id, data, { new: true });
